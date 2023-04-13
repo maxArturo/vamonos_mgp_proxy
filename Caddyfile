@@ -1,22 +1,45 @@
 {
-  order http_cache before reverse_proxy
+	order http_cache before reverse_proxy
+	auto_https off
 }
 
+{$HOST_URL} {
+	@unauthorized not header X-Auth-Token {$API_TOKEN}
+	handle @unauthorized {
+		respond 401
+	}
 
-http://0.0.0.0/providers/mgp/*,  http://localhost/providers/mgp/* {
-  uri strip_prefix /providers/mgp
-  http_cache {
-     cache_type in_memory 
-     match_methods GET POST
-     cache_key {http.request.host}{http.request.uri.path}{http.request.uri.query}:{http.request.body}
-  }
-  reverse_proxy {$MGP_API_URL} {
-    header_up -X-Forwarded-For
-    header_up -X-Forwarded-Host
-    header_up -X-Forwarded-Proto
-    header_up -cache-control
-    header_up Host {upstream_hostport}
-    header_down -pragma
-  }
+	handle_path /providers/mgp/* {
+		# http_cache {
+		# 	cache_type in_memory
+		# 	match_methods GET POST
+		# 	cache_key {http.request.host}{http.request.uri.path}{http.request.uri.query}:{http.request.body}
+		# }
+		reverse_proxy {$MGP_API_URL} {
+			header_up -X-Forwarded*
+			header_up -Via
+			header_up -Fly*
+			header_up -X-Auth-Token
+			header_up Host {upstream_hostport}
+			header_down -pragma
+		}
+	}
+
+	handle_path /map_tiles/osm/* {
+		http_cache {
+			cache_type in_memory
+			match_methods GET POST
+			cache_key {http.request.host}{http.request.uri.path}{http.request.uri.query}
+		}
+		reverse_proxy {$OSM_API_URL} {
+			header_up -X-Forwarded*
+			header_up -Via
+			header_up -Fly*
+			header_up -X-Auth-Token
+			header_up -cache-control
+
+			header_up Host {upstream_hostport}
+			header_down -pragma
+		}
+	}
 }
-

@@ -1,1 +1,3 @@
 FROM ghcr.io/sillygod/cdp-cache/caddy:v0.5.0
+
+COPY Caddyfile /app/Caddyfile
