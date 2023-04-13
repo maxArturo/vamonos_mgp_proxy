@@ -1,0 +1,1 @@
+FROM ghcr.io/sillygod/cdp-cache/caddy:v0.5.0
