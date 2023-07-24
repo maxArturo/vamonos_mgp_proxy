@@ -20,6 +20,7 @@
 			header_up -Via
 			header_up -Fly*
 			header_up -X-Auth-Token
+			header_up -X-Build-Id
 			header_up Host {upstream_hostport}
 			header_down -pragma
 		}
@@ -36,6 +37,7 @@
 			header_up -Via
 			header_up -Fly*
 			header_up -X-Auth-Token
+			header_up -X-Build-Id
 			header_up -cache-control
 
 			header_up Host {upstream_hostport}
