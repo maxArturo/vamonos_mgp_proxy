@@ -10,38 +10,50 @@
 	}
 
 	handle_path /providers/mgp/* {
-		# http_cache {
-		# 	cache_type in_memory
-		# 	match_methods GET POST
-		# 	cache_key {http.request.host}{http.request.uri.path}{http.request.uri.query}:{http.request.body}
-		# }
+		http_cache {
+			match_methods GET POST
+			status_header "X-Vamonos-Mgp-Cache-Status"
+			default_max_age 1m
+			cache_key "{http.request.method} {http.request.host}{http.request.uri.path}?{http.request.uri.query} {http.request.bodyhash}"
+			cache_type in_memory
+		}
 		reverse_proxy {$MGP_API_URL} {
 			header_up -X-Forwarded*
 			header_up -Via
 			header_up -Fly*
-			header_up -X-Auth-Token
-			header_up -X-Build-Id
+			header_up -X-Auth*
+			header_up -cache-control
+			header_up -pragma
+			header_up -X-Build*
 			header_up Host {upstream_hostport}
+
 			header_down -pragma
+			header_down -expires
+			header_down Cache-Control "max-age=60"
 		}
 	}
 
 	handle_path /map_tiles/osm/* {
 		http_cache {
-			cache_type in_memory
 			match_methods GET POST
-			cache_key {http.request.host}{http.request.uri.path}{http.request.uri.query}
+			status_header "X-Vamonos-Mgp-Cache-Status"
+			default_max_age 10080m # 7 days
+			cache_type in_memory
+			cache_key "{http.request.host}{http.request.uri.path}"
 		}
 		reverse_proxy {$OSM_API_URL} {
 			header_up -X-Forwarded*
 			header_up -Via
 			header_up -Fly*
-			header_up -X-Auth-Token
-			header_up -X-Build-Id
+			header_up -X-Auth*
+			header_up -X-Build*
 			header_up -cache-control
-
+			header_up -pragma
 			header_up Host {upstream_hostport}
+
 			header_down -pragma
+			header_down -expires
+			header_down Cache-Control "max-age=604800"
 		}
 	}
 }
