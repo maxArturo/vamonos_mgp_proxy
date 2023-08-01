@@ -1,4 +1,6 @@
-FROM openresty/openresty:1.21.4.2-0-alpine-apk
+FROM openresty/openresty:1.21.4.1-0-bullseye-fat
+
+RUN opm get knyar/nginx-lua-prometheus
 
 # Add the configuration file
 RUN rm /etc/nginx/conf.d/*
