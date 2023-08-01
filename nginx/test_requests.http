@@ -1,0 +1,20 @@
+
+post http://localhost:8080/providers/mgp/app_cuando_llega/webWS.php 
+
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/110.0 
+Accept: application/json, text/javascript, */*; q=0.01 
+Accept-Language: en-US,en;q=0.5 
+Accept-Encoding: gzip 
+Content-Type: application/x-www-form-urlencoded; charset=UTF-8 
+X-Requested-With: XMLHttpRequest 
+Origin: https://appsl.mardelplata.gob.ar 
+Alt-Used: appsl.mardelplata.gob.ar 
+Connection: keep-alive 
+Referer: https://appsl.mardelplata.gob.ar/app_cuando_llega/cuando.php 
+Cookie: PHPSESSID=arfa0qrmsuud5vs4f7mmhr3i40; __cf_bm=67wg1.fMxSXhTsGfrCGUz.UR2kIuVf6SIMjI9BzFWTs-1677607918-0-Adcrg4Y/QRLdh7ynsZmtlXRcyWwl7qnNaGMTt0a7ejliGvkPTsC6sUsHwsPEj3tW9XjRVQU0o9tMaIt0D+jQwCwBW59HcqNxlN0m/R0L0p08e+ut8WuEO2e6XWES8bmg1ORskgACG1FLOWn01VXuhww= 
+Sec-Fetch-Dest: empty 
+Sec-Fetch-Mode: cors 
+Sec-Fetch-Site: same-origin 
+accion=RecuperarParadasConBanderaYDestinoPorLinea&codLinea=93&isSublinea=0 
+
+###
