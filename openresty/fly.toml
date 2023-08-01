@@ -1,0 +1,31 @@
+# fly.toml file generated for vamonos-mgp-proxy on 2023-04-13T13:12:59-03:00
+
+app = "vamonos-mgp-proxy"
+kill_signal = "SIGINT"
+kill_timeout = 5
+mounts = []
+primary_region = "gru"
+processes = []
+
+[env]
+  MGP_API_URL = "https://appsl.mardelplata.gob.ar"
+  OSM_API_URL = "https://tile.openstreetmap.org"
+  HOST_URL = "http://vamonos-mgp-proxy.fly.dev"
+
+[[services]]
+  internal_port = 80
+  processes = ["app"]
+  protocol = "tcp"
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
